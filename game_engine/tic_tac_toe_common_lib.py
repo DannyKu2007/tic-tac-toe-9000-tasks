@@ -17,7 +17,7 @@ class TicTacToeGameInfo:
     sequence_of_turns: List[TicTacToeTurn]
     first_player_id: str
     second_player_id: str
-    winner_id: str # а какие могут быть варианты?
+    winner_id: str  # а какие могут быть варианты?
 
 
 class AbstractTicTacToeGame(ABC):
@@ -27,8 +27,8 @@ class AbstractTicTacToeGame(ABC):
             game_id: str,
             first_player_id: str,
             second_player_id: str,
-            strategy: Callable[[TicTacToeGameInfo], TicTacToeTurn] = None
-        ) -> None:
+            # strategy: Callable[[TicTacToeGameInfo], TicTacToeTurn] = None
+    ) -> None:
         """пока просто раскладываем по полям"""
 
     @abstractmethod
@@ -43,4 +43,3 @@ class AbstractTicTacToeGame(ABC):
     @abstractmethod
     def get_game_info(self) -> TicTacToeGameInfo:
         """обычный геттер"""
-
