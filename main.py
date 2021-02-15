@@ -10,10 +10,10 @@ while game.state_game() == False and len(game.get_game_info().sequence_of_turns)
     if game.get_game_info().sequence_of_turns == []:
         player_id = first_player_id
     else:
-        if game.get_game_info().sequence_of_turns[-1]=="O":
+        if game.get_game_info().sequence_of_turns[-1].player_id==second_player_id:
             player_id = first_player_id
         else:
-            if game.get_game_info().sequence_of_turns[-1]=="X":
+            if game.get_game_info().sequence_of_turns[-1].player_id==first_player_id:
                 player_id = second_player_id
     x_coordinate, y_coordinate = map(int, input().split())
     turn = TicTacToeTurn(player_id,x_coordinate,y_coordinate)

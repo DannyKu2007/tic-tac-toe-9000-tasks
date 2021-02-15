@@ -27,29 +27,33 @@ class TicTacToeGame(AbstractTicTacToeGame):
         )
 
     def is_turn_correct(self, turn: TicTacToeTurn) -> bool:
-        if -1 < turn.x_coordinate < 3 and -1 < turn.y_coordinate < 3:
-            if self.game.field[turn.y_coordinate][turn.x_coordinate] != "X" and \
-                    self.game.field[turn.y_coordinate][turn.x_coordinate] != "O":
-                if turn.player_id == self.game.first_player_id and \
-                        self.game.sequence_of_turns == []:
-                    return True
-                else:
-                    if turn.player_id == self.game.first_player_id and \
-                            self.game.sequence_of_turns[-1] == "O":
+        if self.game.winner_id == "":
+            if -1 < turn.x_coordinate < 3 and -1 < turn.y_coordinate < 3:
+                if self.game.field[turn.x_coordinate][turn.y_coordinate] != "X" and \
+                        self.game.field[turn.x_coordinate][turn.y_coordinate] != "O":
+                    if turn.player_id != self.game.first_player_id and \
+                            self.game.sequence_of_turns == []:
+                        return False
+                    if (turn.player_id == self.game.first_player_id and \
+                            self.game.sequence_of_turns == []):
                         return True
-                    if turn.player_id == self.game.second_player_id and \
-                            self.game.sequence_of_turns[-1] == "X":
-                        return True
+                    else:
+                        if turn.player_id == self.game.first_player_id and \
+                                self.game.sequence_of_turns[-1].player_id == self.game.second_player_id:
+                            return True
+                        if turn.player_id == self.game.second_player_id and \
+                                self.game.sequence_of_turns[-1].player_id == self.game.first_player_id:
+                            return True
         return False
 
     def do_turn(self, turn: TicTacToeTurn) -> TicTacToeGameInfo:
         if self.is_turn_correct(turn) == True:
             if turn.player_id == self.game.first_player_id:
-                self.game.field[turn.y_coordinate][turn.x_coordinate] = "X"
-                self.game.sequence_of_turns.append(deepcopy("X"))
+                self.game.field[turn.x_coordinate][turn.y_coordinate] = "X"
+                self.game.sequence_of_turns.append(deepcopy(turn))
             if turn.player_id == self.game.second_player_id:
-                self.game.field[turn.y_coordinate][turn.x_coordinate] = "O"
-                self.game.sequence_of_turns.append(deepcopy("O"))
+                self.game.field[turn.x_coordinate][turn.y_coordinate] = "O"
+                self.game.sequence_of_turns.append(deepcopy(turn))
         row1 = ""
         row2 = ""
         for i in range(3):
@@ -69,10 +73,10 @@ class TicTacToeGame(AbstractTicTacToeGame):
                     self.game.winner_id = self.game.first_player_id
                 if row1 == "OOO" or row2 == "OOO":
                     self.game.winner_id = self.game.second_player_id
-            return self.get_game_info()
+        return self.get_game_info()
 
     def get_game_info(self) -> TicTacToeGameInfo:
-        return self.game
+        return deepcopy(self.game)
 
     def state_game(self) -> bool:
         return self.game.winner_id != ""
