@@ -51,37 +51,34 @@ class TicTacToeGame(AbstractTicTacToeGame):
             if turn.player_id == self.second_player_id:
                 self.field[turn.x_coordinate][turn.y_coordinate] = "O"
                 self.sequence_of_turns.append(deepcopy(turn))
-        row1 = ""
-        row2 = ""
-        for i in range(3):
-            row1 += self.field[i][i]
-            row2 += self.field[i][2 - i]
-            if row1 == "XXX" or row2 == "XXX":
-                self.winner_id = self.first_player_id
-            if row1 == "OOO" or row2 == "OOO":
-                self.winner_id = self.second_player_id
-        for i in range(3):
             row1 = ""
             row2 = ""
-            for j in range(3):
-                row1 += self.field[j][i]
-                row2 += self.field[i][j]
+            for i in range(3):
+                row1 += self.field[i][i]
+                row2 += self.field[i][2 - i]
                 if row1 == "XXX" or row2 == "XXX":
                     self.winner_id = self.first_player_id
                 if row1 == "OOO" or row2 == "OOO":
                     self.winner_id = self.second_player_id
+            for i in range(3):
+                row1 = ""
+                row2 = ""
+                for j in range(3):
+                    row1 += self.field[j][i]
+                    row2 += self.field[i][j]
+                    if row1 == "XXX" or row2 == "XXX":
+                        self.winner_id = self.first_player_id
+                    if row1 == "OOO" or row2 == "OOO":
+                        self.winner_id = self.second_player_id
         return self.get_game_info()
 
     def get_game_info(self) -> TicTacToeGameInfo:
         game = TicTacToeGameInfo(
             game_id=self.game_id,
-            field=self.field,
-            sequence_of_turns=self.sequence_of_turns,
+            field=deepcopy(self.field),
+            sequence_of_turns=deepcopy(self.sequence_of_turns),
             first_player_id=self.first_player_id,
             second_player_id=self.second_player_id,
             winner_id=self.winner_id
         )
-        return deepcopy(game)
-
-    def state_game(self) -> bool:
-        return self.winner_id != ""
+        return game

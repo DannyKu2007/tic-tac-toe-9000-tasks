@@ -6,7 +6,7 @@ game_id = "7139"
 game = TicTacToeGame(game_id, first_player_id, second_player_id)
 number_player = ""
 player_id = ""
-while game.state_game() == False and len(game.get_game_info().sequence_of_turns) < 9:
+while game.get_game_info().winner_id == "" and len(game.get_game_info().sequence_of_turns) < 9:
     if game.get_game_info().sequence_of_turns == []:
         player_id = first_player_id
     else:
