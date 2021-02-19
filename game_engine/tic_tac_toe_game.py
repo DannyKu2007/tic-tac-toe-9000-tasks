@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Callable, List, Optional
+from typing import List
 from game_engine import TicTacToeTurn, TicTacToeGameInfo, AbstractTicTacToeGame
 
 
@@ -44,7 +44,7 @@ class TicTacToeGame(AbstractTicTacToeGame):
         return False
 
     def do_turn(self, turn: TicTacToeTurn) -> TicTacToeGameInfo:
-        if self.is_turn_correct(turn) == True:
+        if self.is_turn_correct(turn):
             if turn.player_id == self.first_player_id:
                 self.field[turn.x_coordinate][turn.y_coordinate] = "X"
                 self.sequence_of_turns.append(deepcopy(turn))
