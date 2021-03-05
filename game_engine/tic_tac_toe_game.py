@@ -2,10 +2,8 @@ from copy import deepcopy
 from typing import List
 from game_engine import TicTacToeTurn, TicTacToeGameInfo, AbstractTicTacToeGame
 
-
 class TicTacToeGame(AbstractTicTacToeGame):
     """Наследуемся от абстрактного класса и реализуем ручками все методы"""
-
     def __init__(
             self,
             game_id: str,
