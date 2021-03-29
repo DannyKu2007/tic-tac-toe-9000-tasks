@@ -49,25 +49,47 @@ class TicTacToeGame(AbstractTicTacToeGame):
             if turn.player_id == self.second_player_id:
                 self.field[turn.x_coordinate][turn.y_coordinate] = "O"
                 self.sequence_of_turns.append(deepcopy(turn))
-            row1 = ""
-            row2 = ""
+            draw = True
+
             for i in range(3):
-                row1 += self.field[i][i]
-                row2 += self.field[i][2 - i]
-                if row1 == "XXX" or row2 == "XXX":
-                    self.winner_id = self.first_player_id
-                if row1 == "OOO" or row2 == "OOO":
-                    self.winner_id = self.second_player_id
-            for i in range(3):
-                row1 = ""
-                row2 = ""
+                row1 = []
+                row2 = []
+
                 for j in range(3):
-                    row1 += self.field[j][i]
-                    row2 += self.field[i][j]
-                    if row1 == "XXX" or row2 == "XXX":
-                        self.winner_id = self.first_player_id
-                    if row1 == "OOO" or row2 == "OOO":
-                        self.winner_id = self.second_player_id
+                    row1.append(self.field[i][j])
+                    row2.append(self.field[j][i])
+
+                if row1 == ["X"] * 3 or row2 == ["X"] * 3:
+                    self.winner_id = self.first_player_id
+                    return self.get_game_info()
+
+                if row1 == ["O"] * 3 or row2 == ["O"] * 3:
+                    self.winner_id = self.second_player_id
+                    return self.get_game_info()
+
+                if ("X" not in row1) or ("X" not in row2) or ("O" not in row1) or ("O" not in row2):
+                    draw = False
+
+            row1 = []
+            row2 = []
+
+            for i in range(3):
+                row1.append(self.field[i][i])
+                row2.append(self.field[i][2 - i])
+
+            if row1 == ["X"] * 3 or row2 == ["X"] * 3:
+                self.winner_id = self.first_player_id
+                return self.get_game_info()
+
+            if row1 == ["O"] * 3 or row2 == ["O"] * 3:
+                self.winner_id = self.second_player_id
+                return self.get_game_info()
+
+            if ("X" not in row1) or ("X" not in row2) or ("O" not in row1) or ("O" not in row2):
+                draw = False
+
+            if draw:
+                self.winner_id = "Draw"
         return self.get_game_info()
 
     def get_game_info(self) -> TicTacToeGameInfo:
