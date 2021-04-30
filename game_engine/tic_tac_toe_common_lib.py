@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import List
 from dataclasses import dataclass
+from dataclasses_json import dataclass_json
 
 
+@dataclass_json
 @dataclass
 class TicTacToeTurn:
     player_id: str
@@ -10,6 +12,7 @@ class TicTacToeTurn:
     y_coordinate: int
 
 
+@dataclass_json
 @dataclass
 class TicTacToeGameInfo:
     game_id: str

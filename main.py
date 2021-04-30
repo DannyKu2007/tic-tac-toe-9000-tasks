@@ -1,5 +1,4 @@
 from game_engine import TicTacToeGame, TicTacToeTurn
-import uuid
 
 first_player_id = str(input())
 second_player_id = str(input())
