@@ -4,16 +4,23 @@ from game_app import TicTacToeApp, TicTacToeGameNotFoundException
 
 from game_engine import TicTacToeTurn
 
+import json
+
 
 app = Flask(__name__)
 t_app = TicTacToeApp()
-t_app.start_game('1', '2')
 users=[]
 games=[]
 
-@app.route('/')
-def hello_world():
-    return list(t_app._games.keys())[0]
+@app.route('/get_game_id', methods=['GET'])
+def get_game_id():
+    first_player_id = request.json["first_player_id"]
+    second_player_id = request.json["second_player_id"]
+    winner_id = ""
+    for game in games:
+        game = json.loads(game)
+        if game["first_player_id"] == first_player_id and game["second_player_id"] == second_player_id and game["winner_id"] == winner_id:
+            return game["game_id"]
 
 @app.route('/game_info', methods=['GET'])
 def get_game_info():
@@ -29,7 +36,6 @@ def get_game_info():
 @app.route('/do_turn', methods=['POST'])
 def do_turn():
     turn = TicTacToeTurn.from_dict(request.json["turn"])
-    #turn = TicTacToeTurn(request.json["turn"]["player_id"], request.json["turn"]["x_coordinate"], request.json["turn"]["y_coordinate"])
     game_id = request.args.get('game_id')
     if game_id:
         try:
@@ -54,6 +60,7 @@ def registration():
 def start_game():
     first_player_id = request.json["first_player_id"]
     second_player_id = request.json["second_player_id"]
-    new_game = t_app.start_game(first_player_id, second_player_id).to_json()
-    games.append(new_game)
+    if first_player_id != second_player_id and first_player_id in users and second_player_id in users:
+        new_game = t_app.start_game(first_player_id, second_player_id).to_json()
+        games.append(new_game)
     return new_game
