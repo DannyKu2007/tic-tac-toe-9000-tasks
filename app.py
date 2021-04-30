@@ -10,14 +10,15 @@ import json
 app = Flask(__name__)
 t_app = TicTacToeApp()
 users=[]
-games=[]
+games={}
 
 @app.route('/get_game_id', methods=['GET'])
 def get_game_id():
     first_player_id = request.json["first_player_id"]
     second_player_id = request.json["second_player_id"]
     winner_id = ""
-    for game in games:
+    for game_id in games:
+        game = games[game_id]
         game = json.loads(game)
         if game["first_player_id"] == first_player_id and game["second_player_id"] == second_player_id and game["winner_id"] == winner_id:
             return game["game_id"]
@@ -40,6 +41,8 @@ def do_turn():
     if game_id:
         try:
             game = t_app.do_turn(turn, game_id).to_json()
+            if json.loads(game)["winner_id"] != "":
+                games.pop(json.loads(game)["winner_id"], None)
         except TicTacToeGameNotFoundException:
             abort(404)
         return game
@@ -62,5 +65,6 @@ def start_game():
     second_player_id = request.json["second_player_id"]
     if first_player_id != second_player_id and first_player_id in users and second_player_id in users:
         new_game = t_app.start_game(first_player_id, second_player_id).to_json()
-        games.append(new_game)
+        games[json.loads(new_game)["game_id"]] = new_game
+        #games.append(new_game)
     return new_game
